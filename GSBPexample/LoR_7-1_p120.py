@@ -5,34 +5,52 @@ Created on Tue Sep 11 09:54:17 2018
 
 @author: suliang
 
-重点：
+重点：tensorflow的基本语法
 
 1. 基本逻辑：
-    只要跟tensor相关的变量定义，运算定义，都需要用tf自带的，所以需要加tf.
-    只要带tf的定义，都要在session里边才能运行
+    * 只要跟tensor相关的变量定义，运算定义，都需要用tf自带的，所以需要加tf.
+    * 只要带tf的定义，都要在session里边才能运行
+    * tf.get_variable在创建变量是会检查图上是否已创建，如果已创建并且本次未设置为共享，则报错
+      解决办法是在程序尾增加一条tf.reset_default_graph()
+      
 2. 张量类型：
     * tf.int32 表示32位有符号整数
     * tf.float32 表示32位有符号浮点数
     * tf.string 表示可变长度的字节数组？？？
     
-2. 常量定义：通常用法是跟tf.Variable()一起使用，把常量赋值给变量
+3. 常量定义：通常用法是跟tf.Variable()一起使用，把常量赋值给变量
     * tc = tf.constant(5, [2,3]) 表示2行3列的常数5
     * tc = tf.ones([2,3], tf.int32) 表示全1张量，大小2x3
     * tc = tf.zeros([2,3], tf.int32) 表示全0张量，大小2x3
-    * tc = 
+    * tc = tf.random_normal([784, 10], mean=0,stddev=1.0) 表示正态分布随机数，shape为784x10, 2倍标准差之间
 
-3. 特殊变量定义：
+4. 特殊变量定义：
     * ph1 = tf.placeholder() 表示一个带输入的占位函数
     * v1 = tf.Variable(2.0, name = 'v1') 表示定义一个值为2.0名字v1的变量
     * g1 = tf.get_variable(name = 'g1',  表示
                            shape = ,     表示
                            detype = , 
                            initializer=tf.constant_initializer(1))
+5. 基本形状变化：
+    * tf.shape(lst)
+    * tf.reshape(lst, [3,3]) # 把数据变为3x3
     * 
     
-3. 基本数学运算定义：
-    * tf.multiply()
+6. 基本数学运算定义：
+    * tf.multiply(x,y, name = None)  表示按位置相乘
+    * tf.add(x,y, name=None)
+    * tf.pow(x,y, name=None)  表示幂次x^y
+    * tf.matmul(x, w)   表示点积
 
+7. 基本矩阵操作
+    * tf.stack([tensor1, tensor2], axis=0) # 堆叠
+    * tf.one_hot(indices,depth,on_value, off_value, axis) # 独热编码
+    * 
+8. 降维操作
+
+9. 序列比较与索引提取
+    * tf.argmin(data,axis=1)
+    * tf.unique(data) # 返回元祖(lst, idx)，lst为唯一化列表，idx为对应y的index
 
 """
 
@@ -65,7 +83,7 @@ def generate(sample_size, mean, cov, diff,regression):
     return X,Y 
 
 
-'''
+
 # 创建变量
 input_features = tf.placeholder(tf.float32, [None, input_dim])
 input_lables = tf.placeholder(tf.float32, [None, lab_dim])
@@ -96,17 +114,18 @@ with tf.Session() as sess:
             x1 = X[i*minibatchSize:(i+1)*minibatchSize,:]
             y1 = np.reshape(Y[i*minibatchSize:(i+1)*minibatchSize],[-1,1])
             tf.reshape(y1,[-1,1])
-            _,lossval, outputval,errval = sess.run([train,loss,output,err], feed_dict={input_features: x1, input_lables:y1})
+            _,lossval, outputval,errval = sess.run([train,loss,output,err], 
+                                                   feed_dict={input_features: x1, input_lables:y1})
             sumerr =sumerr+errval
 
         print ("Epoch:", '%04d' % (epoch+1), "cost=","{:.9f}".format(lossval),"err=",sumerr/minibatchSize)
         
     train_X, train_Y = generate(100, mean, cov, [3.0],True)
-    colors = ['r' if l == 0 else 'b' for l in train_Y[:]]
+    colors = ['r' if l == 0 else 'b' for l in train_Y[:]]  # 这个颜色定义逻辑好，不过就是比我的复杂
     plt.scatter(train_X[:,0], train_X[:,1], c=colors)
     #plt.scatter(train_X[:, 0], train_X[:, 1], c=train_Y)
     #plt.colorbar()
-'''
+
 
 
 if __name__ == '__main__':
@@ -126,9 +145,8 @@ if __name__ == '__main__':
         
         result = tf.multiply(ph1, ph2)
         
-        init = tf.global_variables_initializer()
         with tf.Session() as sess:
-            sess.run(init)
+            sess.run(tf.global_variables_initializer())
             print(sess.run(result))
         
         
