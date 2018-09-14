@@ -7,6 +7,8 @@ Created on Tue Sep 11 16:00:07 2018
 
 重点：
 
+0. 权重初始化：这步在tensorflow里边帮我完成了
+
 1. 激活函数的概念
     * sigmoid函数: tf.nn.sigmoid(x, name=None)
     * tanh函数: tf.nn.tanh(x, name=None)
@@ -37,9 +39,16 @@ Created on Tue Sep 11 16:00:07 2018
         - 如果是reLU或其他激活函数，建议用MSE
 
 3. 优化器optimizer
-    * 优化器就是梯度下降算法，在tensorflow带有5-6个优化器
+    * 优化器就是梯度下降算法，在tensorflow带有5-6种优化器
         - 常规梯度下降：optimizer = tf.train.GradientDescentOptimizer(learning_rate)
-        - Adam算法： optimizer = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9)
+          梯度下降优化器的底层理论是反向传播算法/残差理论/梯度下降算法
+        
+        - Adam算法： optimizer = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999)
+          Adam优化器叫Adaptive Moment Estimation即自适应距估计方法，其底层理论也是梯度下降
+          但差别在于引入对梯度的一阶矩(均值)估计，和梯度的二阶矩(方差)估计，并引入偏差校正过程和动量参数
+          能够更适应稀疏数据提高收敛速度(动量)和精度(偏差校正)得到最优参数
+        
+    
     * 比较常用的优化器是Adam优化器.
     * 优化方法是：
         -      
@@ -82,7 +91,7 @@ Created on Tue Sep 11 16:00:07 2018
     * 损失函数定义---------------------这条需要设置或者自定义损失函数
     * 权值初始化-----------------------tensorflow集成
     * 前向传播计算----------------------tensorflow集成
-    * 梯度下降求解：先求激活函数导数，再求残差，最后求梯度
+    * 梯度下降求解：先求激活函数导数，再求反向传播的残差，最后求梯度
       --------------------------------这条需要设置optimizer优化器
     * 权重更新：基于梯度下降算法更新-------tensorflow集成
 

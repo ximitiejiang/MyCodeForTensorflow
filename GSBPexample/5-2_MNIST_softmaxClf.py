@@ -23,6 +23,7 @@ Created on Tue Sep 11 16:44:30 2018
 """
 
 # 以下为一个无隐藏层的单层感知机，并配以softmax激活函数，也就等价于softmax分类器了
+# 无隐藏层单层感知机做分类，精度可达到 0.8342
 
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
@@ -72,8 +73,7 @@ with tf.Session() as sess:
         for i in range(total_batch):
             # 借用mnist数据集里自带的next_batch()函数生成batch_x, batch_y
             batch_xs, batch_ys = mnist.train.next_batch(batch_size)
-            # 运行优化器：传进去参数cost, 但为什么不传learning_rate
-            # feed_dict
+            # 运行优化器和cost函数，占位符参数传递进去
             _, c = sess.run([optimizer, cost], feed_dict={x: batch_xs,
                                                           y: batch_ys})
             # Compute average loss

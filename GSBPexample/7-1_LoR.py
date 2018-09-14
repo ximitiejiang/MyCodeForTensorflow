@@ -7,6 +7,10 @@ Created on Tue Sep 11 09:54:17 2018
 
 重点：tensorflow的基本语法
 
+0. 运行方式
+    * sess.run(2*x, feed_dict = {x:3})  # 运行一个运算，传递进去一个数值
+    * sess.run([optimizer, cost], feed_dict={})  # 运行一个函数，传递进去一组数值
+
 1. 基本逻辑：
     * 只要跟tensor相关的变量定义，运算定义，都需要用tf自带的，所以需要加tf.
     * 只要带tf的定义，都要在session里边才能运行
@@ -46,6 +50,7 @@ Created on Tue Sep 11 09:54:17 2018
     * tf.stack([tensor1, tensor2], axis=0) # 堆叠
     * tf.one_hot(indices,depth,on_value, off_value, axis) # 独热编码
     * 
+
 8. 降维操作
 
 9. 序列比较与索引提取
