@@ -28,10 +28,10 @@ Created on Tue Sep 11 09:54:17 2018
     * tc = tf.zeros([2,3], tf.int32) 表示全0张量，大小2x3
     * tc = tf.random_normal([784, 10], mean=0,stddev=1.0) 表示正态分布随机数，shape为784x10, 2倍标准差之间
 
-4. 特殊变量定义：
-    * ph1 = tf.placeholder() 表示一个带输入的占位函数
-    * v1 = tf.Variable(2.0, name = 'v1') 表示定义一个值为2.0名字v1的变量
-    * g1 = tf.get_variable(name = 'g1',  表示
+4. 变量定义/占位符定义
+    * tp1 = tf.placeholder() 表示一个带输入的占位函数
+    * tv1 = tf.Variable(2.0, name = 'v1') 表示定义一个值为2.0名字v1的变量
+    * tg1 = tf.get_variable(name = 'g1',  表示
                            shape = ,     表示
                            detype = , 
                            initializer=tf.constant_initializer(1))
@@ -42,9 +42,10 @@ Created on Tue Sep 11 09:54:17 2018
     
 6. 基本数学运算定义：
     * tf.multiply(x,y, name = None)  表示按位置相乘
+    * tf.matmul(x, w)   表示点积
     * tf.add(x,y, name=None)
     * tf.pow(x,y, name=None)  表示幂次x^y
-    * tf.matmul(x, w)   表示点积
+
 
 7. 基本矩阵操作
     * tf.stack([tensor1, tensor2], axis=0) # 堆叠
